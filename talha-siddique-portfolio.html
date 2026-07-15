@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talha Siddique — AI/ML Engineer in training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #0F1B2D;
+    --ink-2: #16233A;
+    --ink-3: #1E2E48;
+    --parchment: #EDE6D6;
+    --parchment-2: #E3DAC5;
+    --paper: #F4F1E8;
+    --amber: #E3A857;
+    --teal: #5FA3A0;
+    --muted: #8AA0BE;
+    --coral: #C96A54;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'Source Serif 4', serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--serif);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: var(--teal); text-decoration: none; }
+  a:hover{ color: var(--amber); }
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  .wrap{ max-width: 920px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position: sticky; top:0; z-index: 20;
+    background: rgba(15,27,45,0.88);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(244,241,232,0.08);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 14px 24px;
+  }
+  .brand{
+    font-family: var(--mono); font-weight:600; font-size: 0.95rem;
+    color: var(--paper); letter-spacing: 0.02em;
+  }
+  .brand span{ color: var(--amber); }
+  .navlinks{ display:flex; gap: 22px; font-family: var(--mono); font-size: 0.82rem; }
+  .navlinks a{ color: var(--muted); }
+  .navlinks a:hover{ color: var(--amber); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    padding: 110px 0 90px;
+    overflow: hidden;
+  }
+  #loss-canvas{
+    position:absolute; inset:0; width:100%; height:100%;
+    opacity: 0.22; pointer-events:none;
+  }
+  .hero .wrap{ position: relative; z-index: 2; }
+
+  .eyebrow{
+    font-family: var(--mono); font-size: 0.8rem; color: var(--teal);
+    letter-spacing: 0.08em; margin-bottom: 18px; display:flex; align-items:center; gap: 10px;
+  }
+  .eyebrow .dot{
+    width:8px; height:8px; border-radius:50%; background: var(--amber);
+    box-shadow: 0 0 0 3px rgba(227,168,87,0.18);
+  }
+
+  .terminal{
+    background: var(--ink-2);
+    border: 1px solid rgba(244,241,232,0.1);
+    border-radius: 8px;
+    max-width: 620px;
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6);
+    margin-bottom: 34px;
+  }
+  .terminal-bar{
+    display:flex; align-items:center; gap:7px;
+    padding: 10px 14px; border-bottom: 1px solid rgba(244,241,232,0.08);
+  }
+  .terminal-bar span{ width:10px; height:10px; border-radius:50%; background: rgba(244,241,232,0.15); }
+  .terminal-body{
+    font-family: var(--mono); font-size: 0.9rem; padding: 18px 20px 22px;
+    color: var(--paper);
+    min-height: 3.4em;
+  }
+  .terminal-body .prompt{ color: var(--teal); }
+  .terminal-body .out{ color: var(--amber); }
+  .cursor{
+    display:inline-block; width: 8px; height: 1.1em; background: var(--paper);
+    vertical-align: text-bottom; margin-left: 2px;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity: 0; } }
+
+  h1.name{
+    font-family: var(--mono); font-weight: 700;
+    font-size: clamp(2.1rem, 5vw, 3.3rem);
+    margin: 0 0 10px; letter-spacing: -0.01em; color: var(--paper);
+  }
+  .tagline{
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: clamp(1.05rem, 2vw, 1.3rem); color: var(--muted);
+    max-width: 46ch; margin: 0 0 30px;
+  }
+
+  .hero-links{ display:flex; flex-wrap: wrap; gap: 14px; }
+  .pill{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family: var(--mono); font-size: 0.82rem;
+    padding: 9px 16px; border-radius: 999px;
+    border: 1px solid rgba(244,241,232,0.18);
+    color: var(--paper);
+  }
+  .pill:hover{ border-color: var(--amber); color: var(--amber); }
+  .pill svg{ width: 14px; height: 14px; }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding: 70px 0; border-top: 1px solid rgba(244,241,232,0.07); }
+  .label{
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.1em;
+    color: var(--teal); text-transform: uppercase; margin-bottom: 22px;
+    display:flex; align-items:center; gap: 12px;
+  }
+  .label::after{ content:''; flex:1; height:1px; background: rgba(244,241,232,0.1); }
+
+  h2{
+    font-family: var(--mono); font-weight: 600; font-size: 1.5rem;
+    color: var(--paper); margin: 0 0 20px;
+  }
+
+  /* Objective card */
+  .card{
+    background: var(--parchment); color: var(--ink);
+    border-radius: 6px; padding: 34px 36px;
+    position: relative;
+  }
+  .card::before{
+    content: '“'; font-family: Georgia, serif; font-size: 3.5rem;
+    color: var(--coral); position:absolute; top: 6px; left: 18px; line-height:1;
+    opacity: 0.5;
+  }
+  .card p{
+    font-family: var(--serif); font-size: 1.08rem; line-height: 1.75;
+    margin: 0; padding-left: 12px; color: #1c2333;
+  }
+
+  /* Skills as code block */
+  .codeblock{
+    background: var(--ink-2); border: 1px solid rgba(244,241,232,0.1);
+    border-radius: 8px; padding: 26px 28px; font-family: var(--mono);
+    font-size: 0.92rem; overflow-x:auto;
+  }
+  .codeblock .kw{ color: var(--teal); }
+  .codeblock .str{ color: var(--amber); }
+  .codeblock .com{ color: var(--muted); }
+  .codeblock ul{ list-style:none; margin: 6px 0 0; padding:0; }
+  .codeblock li{ padding: 3px 0; }
+
+  /* Projects */
+  .project-card{
+    background: var(--ink-2); border: 1px solid rgba(244,241,232,0.1);
+    border-radius: 8px; padding: 28px 30px;
+    transition: border-color 0.2s ease;
+  }
+  .project-card:hover{ border-color: rgba(227,168,87,0.4); }
+  .project-head{
+    display:flex; align-items:baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 10px;
+  }
+  .project-head h3{
+    font-family: var(--mono); font-size: 1.15rem; color: var(--paper); margin:0;
+  }
+  .project-link{
+    font-family: var(--mono); font-size: 0.78rem; color: var(--teal);
+    display:inline-flex; align-items:center; gap: 6px;
+  }
+  .project-link svg{ width: 13px; height: 13px; }
+  .project-link:hover{ color: var(--amber); }
+  .project-desc{
+    font-family: var(--serif); color: var(--muted); font-size: 1rem;
+    margin: 0 0 18px; max-width: 60ch;
+  }
+  .project-tags{ display:flex; flex-wrap: wrap; gap: 8px; }
+  .tag{
+    font-family: var(--mono); font-size: 0.72rem; color: var(--amber);
+    border: 1px solid rgba(227,168,87,0.3); border-radius: 999px;
+    padding: 4px 12px;
+  }
+
+  /* Education */
+  .edu-row{
+    display:flex; gap: 22px; align-items:flex-start;
+    padding: 22px 0; border-bottom: 1px dashed rgba(244,241,232,0.14);
+  }
+  .edu-row:last-child{ border-bottom:none; }
+  .edu-years{
+    font-family: var(--mono); font-size: 0.82rem; color: var(--amber);
+    white-space: nowrap; padding-top: 4px; min-width: 100px;
+  }
+  .edu-body h3{ margin: 0 0 4px; font-family: var(--mono); font-size: 1.05rem; color: var(--paper); }
+  .edu-body p{ margin:0; color: var(--muted); }
+
+  /* Contact / footer */
+  footer{
+    padding: 70px 0 50px;
+    text-align: left;
+  }
+  .contact-grid{
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px; margin-top: 26px;
+  }
+  .contact-item{
+    display:flex; align-items:center; gap: 12px;
+    font-family: var(--mono); font-size: 0.88rem;
+    padding: 16px 18px; border: 1px solid rgba(244,241,232,0.12);
+    border-radius: 6px;
+  }
+  .contact-item svg{ width: 16px; height: 16px; color: var(--amber); flex-shrink:0; }
+  .foot-note{
+    margin-top: 46px; font-family: var(--mono); font-size: 0.76rem; color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cursor{ animation: none; opacity: 1; }
+    html{ scroll-behavior: auto; }
+  }
+
+  @media (max-width: 640px){
+    .navlinks{ display:none; }
+    .edu-row{ flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">talha<span>@</span>portfolio</div>
+    <div class="navlinks">
+      <a href="#objective">objective</a>
+      <a href="#skills">skills</a>
+      <a href="#projects">projects</a>
+      <a href="#education">education</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <canvas id="loss-canvas"></canvas>
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>OPEN TO INTERNSHIPS &amp; COLLABORATIONS</div>
+
+    <div class="terminal" aria-hidden="true">
+      <div class="terminal-bar"><span></span><span></span><span></span></div>
+      <div class="terminal-body">
+        <span class="prompt">talha@jamia:~$</span> whoami<br>
+        <span class="out" id="typed-out"></span><span class="cursor"></span>
+      </div>
+    </div>
+
+    <h1 class="name">Talha Siddique</h1>
+    <p class="tagline">Final-year B.Tech student training a career in AI/ML — one gradient step at a time.</p>
+
+    <div class="hero-links">
+      <a class="pill" href="mailto:talha.siddiquee1994@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+        talha.siddiquee1994@gmail.com
+      </a>
+      <a class="pill" href="tel:+919625145929">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+        +91 96251 45929
+      </a>
+      <span class="pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        Delhi, India
+      </span>
+      <a class="pill" href="https://github.com/Talha-siddiqueee" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.53 9.53 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+        GitHub
+      </a>
+      <a class="pill" href="https://www.linkedin.com/in/talha-siddique-b35b07270" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="9" width="4" height="12"/><circle cx="5" cy="4" r="2"/><path d="M10 9v12"/><path d="M10 13c0-2 2-4 4.5-4S19 11 19 13v8h-4v-7c0-1-1-2-2-2s-2 1-2 2v7h-1v-8z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</header>
+
+<section id="objective">
+  <div class="wrap">
+    <div class="label">01 — Career Objective</div>
+    <div class="card">
+      <p>Final-year B.Tech student passionate about AI/ML, with strong Python skills and hands-on project experience. Seeking an AI/ML Engineer role to apply my technical knowledge, solve real-world problems, and grow as a machine learning professional while delivering value to the organization.</p>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="label">02 — Skills</div>
+    <div class="codeblock">
+      <span class="com"># core_skills.py</span><br>
+      <span class="kw">skills</span> = {<br>
+      &nbsp;&nbsp;<span class="str">"language"</span>: [<span class="str">"Python"</span>, <span class="str">"SQL"</span>],<br>
+      &nbsp;&nbsp;<span class="str">"ml"</span>: [<span class="str">"Machine Learning"</span>, <span class="str">"Deep Learning"</span>],<br>
+      &nbsp;&nbsp;<span class="str">"foundations"</span>: [<span class="str">"Mathematics"</span>, <span class="str">"Data Visualization"</span>]<br>
+      }<br><br>
+      <span class="com"># status: training in progress, loss trending down ↓</span>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="label">03 — Projects</div>
+    <div class="project-card">
+      <div class="project-head">
+        <h3>ConvertIt</h3>
+        <a class="project-link" href="https://github.com/Talha-siddiqueee" target="_blank" rel="noopener noreferrer">
+          view repo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+        </a>
+      </div>
+      <p class="project-desc">An all-in-one converter app — built with TanStack Start to handle multiple file and unit conversions through a single, fast interface.</p>
+      <div class="project-tags">
+        <span class="tag">TanStack Start</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">Full-stack</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="label">04 — Education</div>
+    <div class="edu-row">
+      <div class="edu-years">2023 — 2027</div>
+      <div class="edu-body">
+        <h3>B.Tech, Computer Science &amp; Engineering</h3>
+        <p>Jamia Hamdard University, New Delhi</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="label">05 — Contact</div>
+    <h2>Let's build something.</h2>
+    <div class="contact-grid">
+      <a class="contact-item" href="mailto:talha.siddiquee1994@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+        talha.siddiquee1994@gmail.com
+      </a>
+      <a class="contact-item" href="tel:+919625145929">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+        +91 96251 45929
+      </a>
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        Delhi, India
+      </div>
+      <a class="contact-item" href="https://github.com/Talha-siddiqueee" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.53 9.53 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+        github.com/Talha-siddiqueee
+      </a>
+      <a class="contact-item" href="https://www.linkedin.com/in/talha-siddique-b35b07270" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="9" width="4" height="12"/><circle cx="5" cy="4" r="2"/><path d="M10 9v12"/><path d="M10 13c0-2 2-4 4.5-4S19 11 19 13v8h-4v-7c0-1-1-2-2-2s-2 1-2 2v7h-1v-8z"/></svg>
+        LinkedIn Profile
+      </a>
+    </div>
+    <div class="foot-note">© 2026 Talha Siddique — built with Python-shaped curiosity.</div>
+  </div>
+</footer>
+
+<script>
+  // Typing effect for the terminal
+  (function(){
+    var text = "AI/ML Engineer in training — building real-world solutions with code.";
+    var el = document.getElementById('typed-out');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduced){ el.textContent = text; return; }
+    var i = 0;
+    function tick(){
+      if(i <= text.length){
+        el.textContent = text.slice(0, i);
+        i++;
+        setTimeout(tick, 28);
+      }
+    }
+    tick();
+  })();
+
+  // Ambient descending "loss curve" canvas animation
+  (function(){
+    var canvas = document.getElementById('loss-canvas');
+    var ctx = canvas.getContext('2d');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var w, h, dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    function resize(){
+      var rect = canvas.parentElement.getBoundingClientRect();
+      w = rect.width; h = rect.height;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var points = [];
+    var N = 90;
+    for(var i=0;i<N;i++){
+      var x = i / (N-1);
+      var base = Math.exp(-x*2.6) * 0.7 + 0.06;
+      points.push(base);
+    }
+
+    var t = 0;
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      ctx.beginPath();
+      ctx.strokeStyle = '#E3A857';
+      ctx.lineWidth = 2;
+      for(var i=0;i<points.length;i++){
+        var noise = reduced ? 0 : Math.sin(i*0.7 + t) * 0.015;
+        var yVal = points[i] + noise;
+        var px = (i/(points.length-1)) * w;
+        var py = h - (h * 0.55) + yVal * h * 0.5 + h*0.15;
+        if(i===0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+
+      // faint grid dots (graph paper feel)
+      ctx.fillStyle = 'rgba(244,241,232,0.06)';
+      var gap = 34;
+      for(var gx=0; gx<w; gx+=gap){
+        for(var gy=0; gy<h; gy+=gap){
+          ctx.fillRect(gx, gy, 1, 1);
+        }
+      }
+
+      if(!reduced){
+        t += 0.02;
+        requestAnimationFrame(draw);
+      }
+    }
+    draw();
+  })();
+</script>
+
+</body>
+</html>
